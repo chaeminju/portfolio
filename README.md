@@ -1,7 +1,5 @@
 # TODO & Schedule Management Service
 
-React + FastAPI + PostgreSQL + Docker Compose 스택으로 구현한 TODO 및 일정 관리 서비스입니다.
-
 ## 기능
 
 ### TODO 관리
@@ -68,6 +66,60 @@ portfolio/
 └── README.md
 
 ```
+## 3-Tier Architecture
+
+본 프로젝트는 Presentation Tier, Application Tier, Data Tier로 구성된
+3-Tier Architecture를 기반으로 설계하였다.
+
+| Tier              | 구성                | 역할                     |
+| ----------------- | ----------------- | ---------------------- |
+| Presentation Tier | React (Frontend)  | 사용자 인터페이스 제공 및 API 요청  |
+| Application Tier  | FastAPI (Backend) | 비즈니스 로직 처리 및 데이터 검증    |
+| Data Tier         | PostgreSQL        | TODO 및 Schedule 데이터 저장 |
+
+## 시스템 흐름도
+                User
+                  │
+                  ▼
+        ┌──────────────────┐
+        │  React Frontend  │
+        │ Presentation Tier│
+        │    Port 3000     │
+        └────────┬─────────┘
+                 │ HTTP (REST API)
+                 ▼
+        ┌──────────────────┐
+        │   FastAPI API    │
+        │ Application Tier │
+        │    Port 8000     │
+        └────────┬─────────┘
+                 │ SQLAlchemy
+                 ▼
+        ┌──────────────────┐
+        │   PostgreSQL     │
+        │    Data Tier     │
+        │    Port 5432     │
+        └──────────────────┘
+
+## Container Description
+
+### Frontend Container
+- React + Vite 기반 SPA 제공
+- 사용자 입력 처리
+- FastAPI REST API 호출
+- Port: 3000
+
+### Backend Container
+- FastAPI 서버 실행
+- TODO 및 Schedule CRUD 처리
+- SQLAlchemy ORM 사용
+- PostgreSQL과 연결
+- Port: 8000
+
+### Database Container
+- PostgreSQL 데이터 저장
+- todos, schedules 테이블 관리
+- Port: 5432
 
 ## 기술 스택
 
@@ -342,20 +394,3 @@ REACT_APP_API_URL=http://localhost:8000
 ## 라이선스
 
 MIT License
-
-## 기여
-
-프로젝트 개선에 대한 피드백이나 기여를 환영합니다.
-
-## 향후 개선 사항
-
-- [ ] 사용자 인증 및 권한 관리
-- [ ] 알림 시스템 구현
-- [ ] 캘린더 뷰 추가
-- [ ] 반복 일정 기능
-- [ ] 파일 첨부 기능
-- [ ] 태그 시스템
-- [ ] 검색 및 고급 필터링
-- [ ] 다크 모드 지원
-- [ ] 국제화 (i18n)
-- [ ] 모바일 앱 버전
